@@ -1,8 +1,6 @@
 streamlit
-streamlit-chat
-uuid
 python-dotenv
-PyMuPDF==1.22.3  # for `fitz`
-langchain>=0.1.13
-pinecone-client>=3.0.0
+PyMuPDF
+langchain
+pinecone
 langchain-google-genai
