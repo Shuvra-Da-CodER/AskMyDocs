@@ -1,0 +1,1 @@
+print("✅ All namespaces have been cleared.")
