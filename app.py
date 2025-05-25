@@ -32,26 +32,36 @@ if "chat_history" not in st.session_state:
 
 if "uploaded_docs" not in st.session_state:
     st.session_state.uploaded_docs = []
-
+if "all_files"not in st.session_state:
+    st.session_state.all_files = {}
 
 # Sidebar UI
 with st.sidebar:
     st.write("⏰ Previous Chats")
     for ns in st.session_state.chat_history:
-        if st.button(f"Chat: {ns}"):
+        filename=st.session_state.all_files[ns]
+        if f"show_preview_{ns}" not in st.session_state:
+            st.session_state[f"show_preview_{ns}"] = False
+        if st.button(f"📄 Chat with: {filename}", key=f"btn_{ns}"):
+            # Toggle preview visibility
+            st.session_state[f"show_preview_{ns}"] = not st.session_state[f"show_preview_{ns}"]
+        
+        if st.session_state[f"show_preview_{ns}"]:
             chat = st.session_state.chat_history[ns]
-            st.write(f"Docs used: {ns}")  # can map ns to doc list for more clarity
-            #for turn in chat:
-            st.write(f"🧑 {chat['user']}")
-            st.write(f"🤖 {chat['bot']}")
+            for msg in chat[-4:]:
+                st.html(f"""
+                    <div style='background-color:#1f3b4d; color:white; padding:6px; border-radius:6px; margin:4px 0; font-size:14px;'>
+                        🧑 {msg['user']}
+                    </div>
+                    <div style='background-color:#d1ffd1; color:black; padding:6px; border-radius:6px; margin-bottom:6px; font-size:14px;'>
+                        🤖 {msg['bot']}
+                    </div>
+                """)
 
 
 # File uploader
 uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
-# if st.button("🔄 Reset Upload"):
-#     st.session_state.uploaded_docs = []
-#     st.session_state.namespace = None
-#     st.rerun()  # force Streamlit to reload
+
 
 if len(uploaded_files)==0 and st.session_state.uploaded_docs:
     st.session_state.uploaded_docs = []
@@ -87,6 +97,7 @@ if uploaded_files and not st.session_state.uploaded_docs:
 
     st.session_state.namespace = namespace
     st.session_state.uploaded_docs.extend(filenames)
+    st.session_state.all_files[namespace]=filenames
     st.success("PDFs processed and indexed!")
 
 
