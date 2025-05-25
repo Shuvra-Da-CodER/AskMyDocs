@@ -7,7 +7,7 @@ from handlers.doc_handler import process_documents
 from handlers.query_handler import run_query
 from datetime import datetime
 
-st.set_page_config(page_title="DocuSense", layout="wide")
+st.set_page_config(page_title="AskMyDocs", layout="wide")
 GOOGLE_FORM_ACTION_URL="https://forms.gle/WDGr5iGPpLgffkJv8"
 st.html(
     f"""
@@ -20,7 +20,7 @@ st.html(
 )
 
 
-st.title("📝 DocuSense : Question Your PDFs ")
+st.title("📝 AskMyDocs : Question Your PDFs ")
 
 
 # Initialize session state
